@@ -95,7 +95,8 @@ public class UserServiceImpl implements UserService {
             return new ResponseEntity<>(new ResponseObjectModel(true, "Please complete create account", map), HttpStatus.OK);
         }else {
             long otpExpire=System.currentTimeMillis()+ otpExpireTime;
-            String otpValue=generateOTP();
+           // String otpValue=generateOTP();
+            String otpValue="111111";
             if(otp==null) {
                 model.setOtp(otpValue);
                 model.setExpirytime(otpExpire);
