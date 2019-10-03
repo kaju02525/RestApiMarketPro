@@ -153,15 +153,12 @@ public class UserServiceImpl implements UserService {
         String pass = "";
         User checkUser, checkUserMobile;
         OTPModel field;
-        checkUser = mongoTemplate.findOne(new Query(Criteria.where("email").is(user.getEmail().trim())), User.class);
         checkUserMobile = mongoTemplate.findOne(new Query(Criteria.where("mobile").is(user.getMobile().trim())), User.class);
         field = mongoTemplate.findOne(new Query(Criteria.where("mobile").is(user.getMobile().trim())), OTPModel.class);
         if (field ==null){
             return new ResponseEntity<>(new ResponseModel(false, "Invalid mobile number Please enter verified mobile no"), HttpStatus.BAD_REQUEST);
         }else if (checkUserMobile != null) {
             return new ResponseEntity<>(new ResponseModel(false, "This mobile number already exist"), HttpStatus.CONFLICT);
-        }else if (checkUser != null) {
-            return new ResponseEntity<>(new ResponseModel(false, "This email id already exist"), HttpStatus.CONFLICT);
         } else {
             pass = user.getPassword();
             user.setUid(timeStamp());

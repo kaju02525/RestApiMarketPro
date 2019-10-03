@@ -43,8 +43,6 @@ public class User {
     @Pattern(regexp="(^$|[0-9]{10})", message = "Please enter valid mobile number must be 10 digits")
     private String mobile;
 
-    @Email(message = "Please enter valid email id")
-    private String email;
 
     @NotNull(message = "gender cannot be empty")
     @ApiModelProperty(allowableValues = "male")
@@ -54,11 +52,7 @@ public class User {
     @Size(min = 8,max = 16,message = "Password must be equal or grater than 8 characters and less than 16 characters")
     private String password;
 
-    @NotNull(message = "city name cannot be empty")
-    @Size(min = 3,message = "city name must not be less than 3 characters")
-    @Pattern(regexp="^[a-zA-Z]+$", message = "Please enter valid city name")
-    private String city;
-    
+  
     @ApiModelProperty(hidden = true)
     private String user_avatar;
 
