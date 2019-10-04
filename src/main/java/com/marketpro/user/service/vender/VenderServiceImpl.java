@@ -1,5 +1,6 @@
 package com.marketpro.user.service.vender;
 
+import com.marketpro.user.custom_model.OutputVerifyVender;
 import com.marketpro.user.custom_model.ResponseArrayModel;
 import com.marketpro.user.custom_model.ResponseModel;
 import com.marketpro.user.custom_model.ResponseObjectModel;
@@ -54,7 +55,22 @@ public class VenderServiceImpl implements VenderService {
         if (vender == null) {
             return new ResponseEntity<>(new ResponseObjectModel(true, "first time create store", new VenderModel()), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseObjectModel(true, "your verification pending", vender), HttpStatus.OK);
+        	 OutputVerifyVender result;
+             AggregationOperation lookup = Aggregation.lookup("category", "category_id", "_id", "join");
+             AggregationOperation unwind = Aggregation.unwind("join", true);
+             AggregationOperation replaceRoot = Aggregation.replaceRoot().withValueOf(ObjectOperators.valueOf("join").mergeWith(Aggregation.ROOT));
+             AggregationOperation project = Aggregation.project().andExclude("join");
+             AggregationOperation match = Aggregation.match(Criteria.where("uid").is(uid.trim()));
+             Aggregation aggregation = Aggregation.newAggregation(lookup, unwind, replaceRoot, project, match);
+
+             result = mongoTemplate.aggregate(aggregation, VenderModel.class, OutputVerifyVender.class).getUniqueMappedResult();
+             if (result == null) {
+                 return new ResponseEntity<>(new ResponseArrayModel(false, "no data available"), HttpStatus.BAD_REQUEST);
+             } else {
+                 return new ResponseEntity<>(new ResponseObjectModel(true, "your verification success", result), HttpStatus.OK);                 
+             }
+        	
+        	
         }
     }
 

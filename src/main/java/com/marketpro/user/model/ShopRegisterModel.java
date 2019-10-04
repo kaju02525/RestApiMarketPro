@@ -25,60 +25,59 @@ import java.util.Date;
 @Document(collection = "shop_register")
 public class ShopRegisterModel {
 
-    @NotNull(message = "user id cannot be null")
+    @NotNull(message = "user id cannot be empty")
     private String uid;
 
-    @NotNull(message = "vender_id id cannot be null")
+    @NotNull(message = "vender_id id cannot be empty")
     private String vender_id;
 
-    @NotNull(message = "category cannot be null")
-    @Size(min = 3, max = 13, message = "category must not be less than 3 characters")
-    @Pattern(regexp = "^[a-zA-Z ]+$", message = "Please enter valid category")
-    private String category;
+    @NotNull(message = "category cannot be empty")
+    @Size(min = 3, message = "category id must valid")
+    private String category_id;
 
-    @NotNull(message = "shop name cannot be null")
+    @NotNull(message = "shop name cannot be empty")
     @Size(min = 3, message = "shop name must not be less than 3 characters")
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "Please enter valid shop name")
     private String shop_name;
 
-    @NotNull(message = "shop email cannot be null")
+    @NotNull(message = "shop email cannot be empty")
     @Size(min = 3, max = 30, message = "shop email must not be less than 3 characters")
     @Email(message = "Please enter valid shop email")
     private String shop_email;
 
-    @NotNull(message = "Mobile number cannot be null")
+    @NotNull(message = "Mobile number cannot be empty")
     @Size(min = 10, max = 10, message = "Mobile number must be 10 digits")
     @Pattern(regexp = "(^$|[0-9]{10})", message = "Please enter valid mobile number must be 10 digits")
     private String shop_mobile;
 
-    @NotNull(message = "shop address cannot be null")
+    @NotNull(message = "shop address cannot be empty")
     @Size(min = 3, max = 150, message = "shop address must not be less than 3 characters max 150")
     private String shop_address;
 
-    @NotNull(message = "shop nearby cannot be null")
+    @NotNull(message = "shop nearby cannot be empty")
     @Size(min = 3, max = 30, message = "shop nearby must not be less than 3 characters")
     private String shop_nearby;
 
-    @NotNull(message = "Pin code cannot be null")
+    @NotNull(message = "Pin code cannot be empty")
     @Size(min = 6, max = 6, message = "Pin code must be 6 digits")
     @Pattern(regexp = "(^$|[0-9]{6})", message = "Please enter valid shop pin code must be 6 digits")
     private String shop_pincode;
 
-    @NotNull(message = "shop color cannot be null")
+    @NotNull(message = "shop color cannot be empty")
     @Size(min = 3, max = 10, message = "shop color must not be less than 3 characters")
     private String shop_color;
 
-    @NotNull(message = "shop owner name cannot be null")
+    @NotNull(message = "shop owner name cannot be empty")
     @Size(min = 3, message = "shop owner name must not be less than 3 characters")
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "Please enter valid shop owner name")
     private String shop_ownername;
 
-    @NotNull(message = "Owner Mobile number cannot be null")
+    @NotNull(message = "Owner Mobile number cannot be empty")
     @Size(min = 10, max = 10, message = "Owner Mobile number must be 10 digits")
     @Pattern(regexp = "(^$|[0-9]{10})", message = "Please enter valid Owner mobile number must be 10 digits")
     private String shop_owner_mobile;
 
-    @NotNull(message = "Owner email cannot be null")
+    @NotNull(message = "Owner email cannot be empty")
     @Size(min = 3, max = 30, message = "Owner email must not be less than 3 characters")
     @Email(message = "Please enter valid Owner email")
     private String shop_owner_email;

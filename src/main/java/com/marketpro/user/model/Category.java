@@ -24,6 +24,7 @@ public class Category {
 	private String category_id;
 	private String category_name;
 	private String category_avatar;
+	private int category_postion;
 
 	@ApiModelProperty(hidden = true)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

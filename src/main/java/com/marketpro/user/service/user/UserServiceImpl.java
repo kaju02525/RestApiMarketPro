@@ -160,8 +160,10 @@ public class UserServiceImpl implements UserService {
         }else if (checkUserMobile != null) {
             return new ResponseEntity<>(new ResponseModel(false, "This mobile number already exist"), HttpStatus.CONFLICT);
         } else {
+        	User users=new User();
+        	users.setUid(timeStamp());
+        	user.setUid(users.getUid());
             pass = user.getPassword();
-            user.setUid(timeStamp());
             user.setUser_avatar("");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             repo.save(user);

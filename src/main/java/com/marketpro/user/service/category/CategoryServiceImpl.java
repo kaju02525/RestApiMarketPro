@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.marketpro.user.utils.Utils.getImageLoad;
+import static com.marketpro.user.utils.Utils.timeStamp;
 
 
 @Service
@@ -41,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     private Query query;
 
     @Override
-    public ResponseEntity<?> categorySave(String category_name, MultipartFile avatar_small) {
+    public ResponseEntity<?> categorySave(String category_name,int category_postion, MultipartFile avatar_small) {
 
         String avatarSmallest = "category_" + UUID.randomUUID() + ".png";
       
@@ -52,8 +53,9 @@ public class CategoryServiceImpl implements CategoryService {
           
             try {
                 Category cate = new Category();
-                cate.setCategory_id(cate.getCategory_id());
+                cate.setCategory_id(timeStamp());
                 cate.setCategory_name(category_name);
+                cate.setCategory_postion(category_postion);
                 cate.setCategory_avatar(avatarSmallest);
                 mongoTemplate.save(cate);
                 return new ResponseEntity<>(new ResponseObjectModel(true, "Category created successfully", cate), HttpStatus.CREATED);
@@ -123,7 +125,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseEntity<?> updateCategory(String category_id, String category_name,MultipartFile category_avatar) {
+    public ResponseEntity<?> updateCategory(String category_id, String category_name,int category_postion,MultipartFile category_avatar) {
         query = new Query();
         Query query1 = new Query();
         query1.addCriteria(Criteria.where("_id").is(category_id));

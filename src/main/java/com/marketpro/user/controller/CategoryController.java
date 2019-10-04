@@ -27,6 +27,7 @@ public class CategoryController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> createCategory(
             @RequestParam("category_name") String category_name,
+            @RequestParam("category_postion") int category_postion,
             @RequestParam("category_avatar") MultipartFile category_avatar) {
         if (category_name.isEmpty()) {
             return new ResponseEntity<>(new ResponseModel(false, "category cannot be empty"), HttpStatus.BAD_REQUEST);
@@ -34,10 +35,12 @@ public class CategoryController {
             return new ResponseEntity<>(new ResponseModel(false, "name must not be less than 3 characters"), HttpStatus.BAD_REQUEST);
         } else if (Pattern.matches("^[a-zA-Z]+$ ", category_name)) {
             return new ResponseEntity<>(new ResponseModel(false, "Please enter valid category name"), HttpStatus.BAD_REQUEST);
-        } else if (category_avatar.isEmpty()) {
+        }else if (category_postion <=0) {
+            return new ResponseEntity<>(new ResponseModel(false, "please enter valid category postion"), HttpStatus.BAD_REQUEST);
+        }  else if (category_avatar.isEmpty()) {
             return new ResponseEntity<>(new ResponseModel(false, "Please upload category image"), HttpStatus.BAD_REQUEST);
         }else {
-            return category.categorySave(category_name,category_avatar);
+            return category.categorySave(category_name,category_postion,category_avatar);
         }
     }
 
@@ -46,6 +49,7 @@ public class CategoryController {
     public ResponseEntity<?> updateCategory(
             @RequestParam("category_id") String category_id,
             @RequestParam("category_name") String category_name,
+            @RequestParam("category_postion") int category_postion,
             @RequestParam("category_avatar") MultipartFile category_avatar) {
 
         if (category_name.isEmpty()) {
@@ -54,10 +58,12 @@ public class CategoryController {
             return new ResponseEntity<>(new ResponseModel(false, "name must not be less than 3 characters"), HttpStatus.BAD_REQUEST);
         } else if (Pattern.matches("^[a-zA-Z]+$ ", category_name)) {
             return new ResponseEntity<>(new ResponseModel(false, "Please enter valid category name"), HttpStatus.BAD_REQUEST);
-        } else if (category_avatar.isEmpty()) {
+        } else if (category_postion <=0) {
+            return new ResponseEntity<>(new ResponseModel(false, "please enter valid category postion"), HttpStatus.BAD_REQUEST);
+        }  else if (category_avatar.isEmpty()) {
             return new ResponseEntity<>(new ResponseModel(false, "Please upload small image"), HttpStatus.BAD_REQUEST);
         } else {
-            return category.updateCategory(category_id,category_name, category_avatar);
+            return category.updateCategory(category_id,category_name,category_postion, category_avatar);
         }
     }
 

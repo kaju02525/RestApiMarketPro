@@ -22,22 +22,22 @@ public class VenderModel {
     @Id
     private String vender_id;
 
-    @NotNull(message = "user id cannot be null")
+    @NotNull(message = "user id cannot be empty")
     private String uid;
 
-    @NotNull(message = "fullname cannot be null")
+    @NotNull(message = "fullname cannot be empty")
     @Size(min = 3,message = "fullname must not be less than 3 characters")
     @Pattern(regexp="^[a-zA-Z ]+$", message = "Please enter valid fullname")
     private String fullname;
 
-    @NotNull(message = "Mobile number cannot be null")
+    @NotNull(message = "Mobile number cannot be empty")
     @Size(min = 10,max = 10,message = "Mobile number must be 10 digits")
     @Pattern(regexp="(^$|[0-9]{10})", message = "Please enter valid mobile number must be 10 digits")
     private String mobile;
 
-    @NotNull(message = "category cannot be null")
-    @Size(min = 3,message = "category must not be less than 3 characters")
-    private String category;
+    @NotNull(message = "category_id cannot be empty")
+    @Size(min = 3,message = "category_id must valid characters")
+    private String category_id;
 
     @ApiModelProperty(hidden = true)
     private int is_verify;
