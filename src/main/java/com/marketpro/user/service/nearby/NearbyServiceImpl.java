@@ -52,7 +52,7 @@ public class NearbyServiceImpl implements NearbyService {
                 for(ShopRegisterModel p:result) {
                     Map<String,Object> map=new HashMap<>();
                     map.put("shop_name", p.getShop_name());
-                    map.put("category", p.getCategory());
+                    map.put("category", p.getCategory_id());
                     map.put("distance",Utils.distFrom(latitude,longitude,p.getLocation(),p.getLocation())+" KM");
                     map.put("location",p.getLocation());
                     list.add(map);

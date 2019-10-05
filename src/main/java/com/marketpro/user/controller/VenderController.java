@@ -66,8 +66,8 @@ public class VenderController {
     }
 
     @GetMapping("/get-store")
-    public ResponseEntity<?> getStore(@RequestParam("category") String category) {
-        return venderService.getStore(category);
+    public ResponseEntity<?> getStore(@RequestParam("category_id") String category_id) {
+        return venderService.getStore(category_id);
     }
 
     @GetMapping("/get-store-details")

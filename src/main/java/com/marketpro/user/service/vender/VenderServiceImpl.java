@@ -138,13 +138,13 @@ public class VenderServiceImpl implements VenderService {
     }
 
     @Override
-    public ResponseEntity<?> getStore(String category) {
+    public ResponseEntity<?> getStore(String category_id) {
         List<StoreModel> result;
         AggregationOperation lookup = Aggregation.lookup("user", "uid", "uid", "join");
         AggregationOperation unwind = Aggregation.unwind("join", true);
         AggregationOperation replaceRoot = Aggregation.replaceRoot().withValueOf(ObjectOperators.valueOf("join").mergeWith(Aggregation.ROOT));
         AggregationOperation project = Aggregation.project().andExclude("join");
-        AggregationOperation match = Aggregation.match(Criteria.where("category").is(category.trim()).and("is_verify").is(2));
+        AggregationOperation match = Aggregation.match(Criteria.where("category_id").is(category_id.trim()).and("is_verify").is(2));
         Aggregation aggregation = Aggregation.newAggregation(lookup, unwind, replaceRoot, project, match);
 
         result = mongoTemplate.aggregate(aggregation, ShopRegisterModel.class, StoreModel.class).getMappedResults();
@@ -162,8 +162,16 @@ public class VenderServiceImpl implements VenderService {
         AggregationOperation replaceRoot = Aggregation.replaceRoot().withValueOf(ObjectOperators.valueOf("join").mergeWith(Aggregation.ROOT));
         AggregationOperation project = Aggregation.project().andExclude("join");
         AggregationOperation match = Aggregation.match(Criteria.where("vender_id").is(vender_id.trim()));
-        Aggregation aggregation = Aggregation.newAggregation(lookup, unwind, replaceRoot, project, match);
 
+
+        AggregationOperation lookup1 = Aggregation.lookup("category", "category_id", "_id", "join");
+        AggregationOperation unwind1 = Aggregation.unwind("join", true);
+        AggregationOperation replaceRoot1 = Aggregation.replaceRoot().withValueOf(ObjectOperators.valueOf("join").mergeWith(Aggregation.ROOT));
+        AggregationOperation project1 = Aggregation.project().andExclude("join");
+
+        Aggregation aggregation = Aggregation.newAggregation(lookup,lookup1, unwind,unwind1, replaceRoot,replaceRoot1, project,project1, match);
+
+        
         result = mongoTemplate.aggregate(aggregation, ShopRegisterModel.class, StoreDetailsModel.class).getUniqueMappedResult();
         if (result == null) {
             return new ResponseEntity<>(new ResponseArrayModel(false, "no data available"), HttpStatus.BAD_REQUEST);

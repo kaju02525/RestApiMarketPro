@@ -9,7 +9,8 @@ import java.util.List;
 public class StoreDetailsModel {
     private String uid;
     private String vender_id;
-    private String category;
+    private String category_id;
+    private String category_name;
     private String shop_name;
     private String shop_mobile;
     private String shop_address;
