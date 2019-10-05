@@ -9,11 +9,9 @@ public class OutputProduct {
 
     @Field("_id")
     private String product_id;
-    private String subcategory_id;
     private String category_id;
     private String category_name;
     private String product_name;
-    private String subcategory_name;
     private String product_desc;
     private String product_features;
     private String product_unique_no;

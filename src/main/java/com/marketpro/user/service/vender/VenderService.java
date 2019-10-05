@@ -22,7 +22,7 @@ public interface VenderService {
 
     ResponseEntity<?> getStoreAll();
 
-    ResponseEntity<?> getStore(String category);
+    ResponseEntity<?> getStore(String category_id);
 
     ResponseEntity<?> getStoreDetails(String vender_id);
 

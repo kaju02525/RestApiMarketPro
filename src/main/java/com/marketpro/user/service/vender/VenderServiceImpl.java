@@ -51,10 +51,14 @@ public class VenderServiceImpl implements VenderService {
 
     @Override
     public ResponseEntity<?> venderVerify(String uid) {
+        User userid = mongoTemplate.findOne(new Query(Criteria.where("uid").is(uid.trim())), User.class);
         VenderModel vender = mongoTemplate.findOne(new Query(Criteria.where("uid").is(uid.trim())), VenderModel.class);
-        if (vender == null) {
-            return new ResponseEntity<>(new ResponseObjectModel(true, "first time create store", new VenderModel()), HttpStatus.OK);
-        } else {
+
+        if (userid == null) {
+            return new ResponseEntity<>(new ResponseModel(false, "User id invalid! please try again"), HttpStatus.BAD_REQUEST);
+        }else if (vender == null) {
+            return new ResponseEntity<>(new ResponseObjectModel(true, "Please register your shop", new VenderModel()), HttpStatus.OK);
+        }else {
         	 OutputVerifyVender result;
              AggregationOperation lookup = Aggregation.lookup("category", "category_id", "_id", "join");
              AggregationOperation unwind = Aggregation.unwind("join", true);
@@ -67,7 +71,14 @@ public class VenderServiceImpl implements VenderService {
              if (result == null) {
                  return new ResponseEntity<>(new ResponseArrayModel(false, "no data available"), HttpStatus.BAD_REQUEST);
              } else {
-                 return new ResponseEntity<>(new ResponseObjectModel(true, "your verification success", result), HttpStatus.OK);                 
+            	 String message="";
+            	 if(result.getIs_verify()==1) {
+            		 message="Your Verification Pending";
+            	 }
+                 if(result.getIs_verify()==3) {
+                	 message="Your Shop has been rejected";
+            	 }
+                 return new ResponseEntity<>(new ResponseObjectModel(true,message, result), HttpStatus.OK);                 
              }
         	
         	
@@ -87,7 +98,7 @@ public class VenderServiceImpl implements VenderService {
                 vender.setIs_verify(1);
                 mongoTemplate.save(vender);
                 mongoTemplate.save(new NotificationModel(vender.getUid(),"Pending","your verification pending"));
-                return new ResponseEntity<>(new ResponseObjectModel(true, "your verification pending", vender), HttpStatus.OK);
+                return new ResponseEntity<>(new ResponseObjectModel(true, "Your verification pending", vender), HttpStatus.OK);
             }
         }
     }
