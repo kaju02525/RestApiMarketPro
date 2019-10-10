@@ -24,11 +24,15 @@ public interface UserService {
 
     ResponseEntity<?> getUserAll();
 
-    ResponseEntity<?> editProfile(String uid, MultipartFile user_avatar);
+    ResponseEntity<?> editProfile(String uid, MultipartFile user_avatar,String first_name,String email,String dob);
 
     ResponseEntity<?> getPhoto(String path);
 
     ResponseEntity<?> sendOTP(OTPModel otp);
 
     ResponseEntity<?> VerifyOTP(OtpVerifyModel verifyModel);
+    
+    ResponseEntity<?> getDashboard(String uid);
+    
+    
 }

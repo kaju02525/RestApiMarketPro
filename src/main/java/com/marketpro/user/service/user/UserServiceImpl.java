@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> createUser(User user) {
         String pass = "";
-        User checkUser, checkUserMobile;
+        User checkUserMobile;
         OTPModel field;
         checkUserMobile = mongoTemplate.findOne(new Query(Criteria.where("mobile").is(user.getMobile().trim())), User.class);
         field = mongoTemplate.findOne(new Query(Criteria.where("mobile").is(user.getMobile().trim())), OTPModel.class);
@@ -162,8 +162,10 @@ public class UserServiceImpl implements UserService {
         } else {
         	User users=new User();
         	users.setUid(timeStamp());
-        	user.setUid(users.getUid());
+        	user.setUid(users.getUid()+user.getMobile());
             pass = user.getPassword();
+            user.setEmail("");
+            user.setDob("");
             user.setUser_avatar("");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             repo.save(user);
@@ -194,6 +196,20 @@ public class UserServiceImpl implements UserService {
             return new ResponseEntity<>(new ResponseObjectModel(true, "Your login successfully", userData), HttpStatus.OK);
         }
     }
+    
+    @Override
+	public ResponseEntity<?> getDashboard(String uid) {
+    	Query query = new Query();
+        User userData;
+        query.addCriteria(Criteria.where("_id").is(uid.trim()));
+        userData = mongoTemplate.findOne(query, User.class);
+
+        if (userData == null) {
+            return new ResponseEntity<>(new ResponseObjectModel(false, "user id invalid ! please try again", null), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(new ResponseObjectModel(true, "dashboard successfully", userData), HttpStatus.OK);
+        }
+	}
 
     @Override
     public ResponseEntity<?> forgotPassword(ForgotPassword forgotPass) {
@@ -283,7 +299,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ResponseEntity<?> editProfile(String uid, MultipartFile user_avatar) {
+    public ResponseEntity<?> editProfile(String uid, MultipartFile user_avatar,String first_name,String email,String dob) {
         User model = mongoTemplate.findOne(new Query(Criteria.where("uid").is(uid.trim())), User.class);
         if (model == null) {
             return new ResponseEntity<>(new ResponseModel(false, "user id invalid! please try again"), HttpStatus.BAD_REQUEST);
@@ -299,10 +315,16 @@ public class UserServiceImpl implements UserService {
                 }
                 Query query = new Query();
                 query.addCriteria(Criteria.where("uid").is(uid.trim()));
-                Update update = new Update().set("user_avatar", avatarUser);
+                Update update = new Update().set("user_avatar", avatarUser)
+                		                   .set("first_name", first_name)
+                		                   .set("email", email)
+                		                   .set("dob", dob);
                 mongoTemplate.upsert(query, update, User.class);
                 Map<String, String> map = new HashMap<>();
                 map.put("uid", uid);
+                map.put("first_name", first_name);
+                map.put("email", email);
+                map.put("dob", dob);
                 map.put("user_avatar", avatarUser);
                 return new ResponseEntity<>(new ResponseObjectModel(true, "profile has been updated successfully", map), HttpStatus.OK);
             } catch (Exception e) {
@@ -320,6 +342,4 @@ public class UserServiceImpl implements UserService {
             return new ResponseEntity<>(new ResponseModel(false, "image path not exists"), HttpStatus.BAD_REQUEST);
         }
     }
-
-
 }

@@ -30,23 +30,27 @@ public class User {
 
     @NotNull(message = "first name cannot be empty")
     @Size(min = 3,message = "first name must not be less than 3 characters")
-    @Pattern(regexp="^[a-zA-Z]+$", message = "Please enter valid first name")
+    @Pattern(regexp="^[a-zA-Z ]+$", message = "Please enter valid first name")
     private String first_name;
 
     @NotNull(message = "last name cannot be empty")
     @Size(min = 3,message = "last name must not be less than 3 characters")
-    @Pattern(regexp="^[a-zA-Z]+$", message = "Please enter valid last name")
+    @Pattern(regexp="^[a-zA-Z ]+$", message = "Please enter valid last name")
     private String last_name;
 
     @NotNull(message = "Mobile number cannot be empty")
     @Size(min = 10,max = 10,message = "Mobile number must be 10 digits")
     @Pattern(regexp="(^$|[0-9]{10})", message = "Please enter valid mobile number must be 10 digits")
     private String mobile;
-
-
+    
+    private String email;
+    private String dob;
+    
     @NotNull(message = "gender cannot be empty")
     @ApiModelProperty(allowableValues = "male")
     private String gender;
+    
+    
 
     @NotNull(message = "password cannot be empty")
     @Size(min = 8,max = 16,message = "Password must be equal or grater than 8 characters and less than 16 characters")
