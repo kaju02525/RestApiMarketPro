@@ -6,6 +6,8 @@ import com.marketpro.user.custom_model.ResponseObjectModel;
 import com.marketpro.user.model.Category;
 import com.marketpro.user.exception.CustomException;
 import com.marketpro.user.utils.StorageProperties;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -53,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
           
             try {
                 Category cate = new Category();
-                cate.setCategory_id(timeStamp());
+                cate.setCategory_id(RandomStringUtils.randomNumeric(5));
                 cate.setCategory_name(category_name);
                 cate.setCategory_postion(category_postion);
                 cate.setCategory_avatar(avatarSmallest);
